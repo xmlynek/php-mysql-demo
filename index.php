@@ -3,20 +3,19 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if(isset($_POST['username']) && isset($_POST['password'])) {
+if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     echo $username . "  " . $password;
 }
 
-if(isset($_GET['id'])) {
+if (isset($_GET['id'])) {
     echo $_GET['id'];
 }
 
 // var_dump($_SERVER);
 // var_dump($_GET);
-// var_dump($_POST);
-
+var_dump($_POST);
 
 ?>
 
@@ -33,6 +32,12 @@ if(isset($_GET['id'])) {
 <body>
 
     <form action="index.php" method="POST">
+        <?php
+            echo  "<div>
+            <label for='email'>Email</label>
+            <input type='email' id='email' name='email'>
+            </div>";
+        ?>
         <div>
             <label for="username">Meno</label>
             <input type="text" id="username" name="username">
