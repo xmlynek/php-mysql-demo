@@ -3,19 +3,20 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (isset($_POST['username']) && isset($_POST['password'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    echo $username . "  " . $password;
-}
+// if (isset($_POST['username']) && isset($_POST['password'])) {
+//     $username = $_POST['username'];
+//     $password = $_POST['password'];
+//     echo $username . "  " . $password;
+// }
 
-if (isset($_GET['id'])) {
-    echo $_GET['id'];
-}
+// if (isset($_GET['id'])) {
+//     echo $_GET['id'];
+// }
 
 // var_dump($_SERVER);
 // var_dump($_GET);
-var_dump($_POST);
+// var_dump($_POST);
+
 
 ?>
 
@@ -31,7 +32,10 @@ var_dump($_POST);
 
 <body>
 
-    <form action="index.php" method="POST">
+    <a href="login.php">Prihlasit</a>
+    <a href="register.php">Registracia</a>
+
+    <!-- <form action="index.php" method="POST">
         <?php
             echo  "<div>
             <label for='email'>Email</label>
@@ -49,7 +53,7 @@ var_dump($_POST);
         <div>
             <button type="submit">Prihlasit</button>
         </div>
-    </form>
+    </form> -->
 
 </body>
 
