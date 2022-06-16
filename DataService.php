@@ -84,3 +84,20 @@ function deleteDataById($id)
         return null;
     }
 }
+
+function updateDataById($id, $length, $weight, $height)
+{
+    try {
+        // database connection
+        $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME);
+        // create statement
+        $stmt = $conn->prepare("UPDATE `data` SET `length`=?, `weight`=?, `height`=? WHERE `id`=?");
+        $stmt->bind_param("dddi",  $length, $weight, $height, $id);
+        $stmt->execute();
+        $stmt->close();
+        $conn->close();
+        return getDataById($id);
+    } catch (Error $err) {
+        return null;
+    }
+}

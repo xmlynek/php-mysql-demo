@@ -9,6 +9,12 @@ $requestBody = json_decode($requestBodyJSON, TRUE); //convert JSON into array
 
 require_once "../DataService.php";
 
+function checkRequestBody($requestBody)
+{
+    return (isset($requestBody['length']) && isset($requestBody['weight']) && isset($requestBody['height'])
+        && is_numeric($requestBody['length']) && is_numeric($requestBody['weight']) && is_numeric($requestBody['height']));
+};
+
 
 if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['id'])) {
     $data = getDataById(htmlspecialchars($_GET['id']));
@@ -22,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['id'])) {
     $dataList = getAllData();
     echo json_encode($dataList);
 } else if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    if (isset($requestBody['length']) && isset($requestBody['weight']) && isset($requestBody['height']) 
-    && is_numeric($requestBody['length']) && is_numeric($requestBody['weight']) && is_numeric($requestBody['height'])) {
+    if (checkRequestBody($requestBody)) {
         // create new data
         $createdObject = createNewData($requestBody['length'], $requestBody['weight'], $requestBody['height']);
         if ($createdObject) {
@@ -38,14 +43,33 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['id'])) {
         // if wrong request body args -> return status code 400
         header("HTTP/1.0 400 Bad Request");
     }
-} else if ($_SERVER['REQUEST_METHOD'] === "PUT") {
-    echo "kebab UPDATE";
+} else if ($_SERVER['REQUEST_METHOD'] === "PUT" && isset($_GET['id'])) {
+    $id = htmlspecialchars($_GET['id']);
+    $data = getDataById($id);
+    if ($data) {
+        if (checkRequestBody($requestBody)) {
+            $updatedData = updateDataById($id, $requestBody['length'], $requestBody['weight'], $requestBody['height']);
+            if ($updatedData) {
+                // return created data
+                echo json_encode($updatedData);
+            } else {
+                // if error, return status code 500
+                header("HTTP/1.0 500 Internal Server Error");
+            }
+        } else {
+            // if wrong request body args -> return status code 400
+            header("HTTP/1.0 400 Bad Request");
+        }
+    } else {
+        header("HTTP/1.0 404 Not Found");
+        echo "NOT FOUND";
+    }
 } else if ($_SERVER['REQUEST_METHOD'] === "DELETE" && isset($_GET['id'])) {
     $id = htmlspecialchars($_GET['id']);
     $data = getDataById($id);
     if ($data) {
         $wasDeleted = deleteDataById($id);
-        if($wasDeleted) {
+        if ($wasDeleted) {
             header("HTTP/1.0 204 No Content");
         } else {
             header("HTTP/1.0 500 Internal Server Error");
