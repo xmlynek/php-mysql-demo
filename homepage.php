@@ -10,9 +10,13 @@ if (isset($_SESSION['user'])) {
     header("Location: login.php");
 }
 
+function refetchData() {
+    $dataListResponse = file_get_contents('http://localhost/phpuvod/data/index.php');
+    return json_decode($dataListResponse);
+}
+$dataList = refetchData();
 // $dataList = getAllData();
-$dataListResponse = file_get_contents('http://localhost/phpuvod/data/index.php');
-$dataList = json_decode($dataListResponse);
+
 
 // var_dump($dataList);
 ?>
@@ -24,17 +28,20 @@ $dataList = json_decode($dataListResponse);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
     <title>Homepage</title>
 </head>
 
 <body>
-    <header>
+    <header class="text-center">
         <h1>Homepage</h1>
+        <a href='logout.php' class="btn btn-primary btn-size">Odhlásiť</a>
     </header>
 
-    <section>
+    <section class="card lg mt-5">
         <h2>User info</h2>
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>id</th>
@@ -56,31 +63,14 @@ $dataList = json_decode($dataListResponse);
         </table>
     </section>
 
-    <section>
+    <section class="card lg mt-4">
         <h2>Data</h2>
-        <form method="POST">
-            <div>
-                <label for="length">Length</label>
-                <input type="number" id="length" name="length" step="0.001" required>
-            </div>
-            <div>
-                <label for="weight">Weight</label>
-                <input type="number" id="weight" name="weight" step="0.001" required>
-            </div>
-            <div>
-                <label for="height">Height</label>
-                <input type="number" id="height" name="height" step="0.001" required>
-            </div>
-            <div>
-                <button type="submit">Pridat data</button>
-            </div>
-        </form>
 
         <?php if (!$dataList || sizeof($dataList) === 0) {
             echo "<p>Zoznam dát je prázdny</p>";
         } else {
             echo "
-        <table>
+        <table class='table'>
             <thead>
                 <tr>
                     <th>id</th>
@@ -101,14 +91,61 @@ $dataList = json_decode($dataListResponse);
             echo  "</tbody></table>";
         } ?>
 
-        <div id="data-table">
-        </div>
+        <!-- <div id="data-table">
+        </div> -->
+    </section>
+
+    <section class="mt-4 card lg">
+        <h2>Pridanie dát</h2>
+        <form method="POST" id="addForm" >
+            <div class="mb-3">
+                <label for="length" class="form-label">Length</label>
+                <input type="number" class="form-control" id="length" name="length" step="0.001" required>
+            </div>
+            <div class="mb-3">
+                <label for="weight" class="form-label">Weight</label>
+                <input type="number" class="form-control" id="weight" name="weight" step="0.001" required>
+            </div>
+            <div class="mb-3">
+                <label for="height" class="form-label">Height</label>
+                <input type="number" class="form-control" id="height" name="height" step="0.001" required>
+            </div>
+            <div class="btn-center">
+                <button type="submit" class="btn btn-primary btn-size">Pridat data</button>
+            </div>
+        </form>
     </section>
 
 
-    <a href='logout.php'>Odhlasit</a>
-
     <script>
+        const addForm = document.getElementById("addForm");
+        const lengthInput = document.getElementById('length');
+        const weightInput = document.getElementById('weight');
+        const heightInput = document.getElementById('height');
+
+        addForm.addEventListener('submit', function(e) {
+            const body = {
+                length: lengthInput.value,
+                weight: weightInput.value,
+                height: heightInput.value
+            }
+            console.log(body);
+            fetch("http://localhost/phpuvod/data/index.php", {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(data => {
+                    console.log(data);
+                    <?php $dataList = refetchData(); ?>
+                    for (const key in data) {
+                        console.log(data[key]);
+                    }
+                })
+                .catch(console.log);
+        })
+
         // let dataList = [];
 
         // const dataTable = document.getElementById("data-table");
