@@ -67,3 +67,20 @@ function createNewData($length, $weight, $height)
         return null;
     }
 }
+
+function deleteDataById($id)
+{
+    try {
+        // database connection
+        $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME);
+        // create statement
+        $stmt = $conn->prepare("DELETE FROM `data` WHERE `id`=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        $conn->close();
+        return true;
+    } catch (Error $err) {
+        return null;
+    }
+}

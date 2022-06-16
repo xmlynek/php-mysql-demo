@@ -87,13 +87,14 @@ $dataList = json_decode($dataListResponse);
             echo "<p>Zoznam dát je prázdny</p>";
         } else {
             echo "
-        <table class='table'>
+        <table class='table table-striped table-hover'>
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>length</th>
-                    <th>weight</th>
-                    <th>height</th>
+                    <th>Id</th>
+                    <th>Length</th>
+                    <th>Weight</th>
+                    <th>Height</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>";
@@ -103,6 +104,7 @@ $dataList = json_decode($dataListResponse);
                 <td>{$data->length}</td>
                 <td>{$data->weight}</td>
                 <td>{$data->height}</td>
+                <td><button href='#' class='btn btn-danger' onClick='deleteDataHandler($data->id)'>Delete</button></td>
                 </tr>";
             }
             echo  "</tbody></table>";
@@ -114,8 +116,8 @@ $dataList = json_decode($dataListResponse);
 
     <section class="mt-4 card lg mb-5">
         <h2>Pridanie dát</h2>
-        <?php 
-        if($apiErr) {
+        <?php
+        if ($apiErr) {
             echo "<div class='mt-1 text-center text-error'>
             <p class='error'>$apiErr</p>
             </div>";
@@ -142,6 +144,16 @@ $dataList = json_decode($dataListResponse);
 
 
     <script>
+        const deleteDataHandler = async (id) => {
+            await fetch("http://localhost/phpuvod/data/index.php?id=" + id, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            location.assign('http://localhost/phpuvod/homepage.php');
+        }
+
         // const addForm = document.getElementById("addForm");
         // const lengthInput = document.getElementById('length');
         // const weightInput = document.getElementById('weight');

@@ -40,6 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['id'])) {
     }
 } else if ($_SERVER['REQUEST_METHOD'] === "PUT") {
     echo "kebab UPDATE";
-} else if ($_SERVER['REQUEST_METHOD'] === "DELETE") {
-    echo "kebab DELETE";
+} else if ($_SERVER['REQUEST_METHOD'] === "DELETE" && isset($_GET['id'])) {
+    $id = htmlspecialchars($_GET['id']);
+    $data = getDataById($id);
+    if ($data) {
+        $wasDeleted = deleteDataById($id);
+        if($wasDeleted) {
+            header("HTTP/1.0 204 No Content");
+        } else {
+            header("HTTP/1.0 500 Internal Server Error");
+        }
+    } else {
+        header("HTTP/1.0 404 Not Found");
+        echo "NOT FOUND";
+    }
 }
