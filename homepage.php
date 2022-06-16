@@ -31,6 +31,22 @@ if (isset($_POST['length']) && isset($_POST['weight']) && isset($_POST['height']
     // var_dump($result);
 }
 
+if(isset($_GET['deleteDataId'])) {
+    $url = 'http://localhost/phpuvod/data/index.php?id=' . $_GET['deleteDataId'];
+    $options = array(
+        'http' => array(
+            'header'  => "Content-type: application/json\r\n",
+            'method'  => 'DELETE',
+        )
+    );
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    if ($result === FALSE) { /* Handle error */
+        $apiErr = "Chyba pri mazani dát";
+    }
+    // var_dump($result);
+}
+
 $dataListResponse = file_get_contents('http://localhost/phpuvod/data/index.php');
 $dataList = json_decode($dataListResponse);
 
@@ -104,7 +120,7 @@ $dataList = json_decode($dataListResponse);
                 <td>{$data->length}</td>
                 <td>{$data->weight}</td>
                 <td>{$data->height}</td>
-                <td><button href='#' class='btn btn-danger' onClick='deleteDataHandler($data->id)'>Delete</button></td>
+                <td><a href='http://localhost/phpuvod/homepage.php?deleteDataId={$data->id}' class='btn btn-danger'>Delete</a></td>
                 </tr>";
             }
             echo  "</tbody></table>";
@@ -144,15 +160,15 @@ $dataList = json_decode($dataListResponse);
 
 
     <script>
-        const deleteDataHandler = async (id) => {
-            await fetch("http://localhost/phpuvod/data/index.php?id=" + id, {
-                method: 'DELETE',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            location.assign('http://localhost/phpuvod/homepage.php');
-        }
+        // const deleteDataHandler = async (id) => {
+        //     await fetch("http://localhost/phpuvod/data/index.php?id=" + id, {
+        //         method: 'DELETE',
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         }
+        //     });
+        //     location.assign('http://localhost/phpuvod/homepage.php');
+        // }
 
         // const addForm = document.getElementById("addForm");
         // const lengthInput = document.getElementById('length');
