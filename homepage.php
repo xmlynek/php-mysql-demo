@@ -10,15 +10,32 @@ if (isset($_SESSION['user'])) {
     header("Location: login.php");
 }
 
-function refetchData() {
-    $dataListResponse = file_get_contents('http://localhost/phpuvod/data/index.php');
-    return json_decode($dataListResponse);
-}
-$dataList = refetchData();
-// $dataList = getAllData();
+$apiErr = false;
 
+if (isset($_POST['length']) && isset($_POST['weight']) && isset($_POST['height'])) {
+    $url = 'http://localhost/phpuvod/data/index.php';
+    $requestBody = array('length' => $_POST['length'], 'weight' => $_POST['weight'], 'height' => $_POST['height']);
+
+    $options = array(
+        'http' => array(
+            'header'  => "Content-type: application/json\r\n",
+            'method'  => 'POST',
+            'content' => json_encode($requestBody)
+        )
+    );
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    if ($result === FALSE) { /* Handle error */
+        $apiErr = "Chyba pri vytvorení nových dát!";
+    }
+    // var_dump($result);
+}
+
+$dataListResponse = file_get_contents('http://localhost/phpuvod/data/index.php');
+$dataList = json_decode($dataListResponse);
 
 // var_dump($dataList);
+
 ?>
 
 <!DOCTYPE html>
@@ -95,9 +112,16 @@ $dataList = refetchData();
         </div> -->
     </section>
 
-    <section class="mt-4 card lg">
+    <section class="mt-4 card lg mb-5">
         <h2>Pridanie dát</h2>
-        <form method="POST" id="addForm" >
+        <?php 
+        if($apiErr) {
+            echo "<div class='mt-1 text-center text-error'>
+            <p class='error'>$apiErr</p>
+            </div>";
+        }
+        ?>
+        <form method="POST" id="addForm" action="homepage.php">
             <div class="mb-3">
                 <label for="length" class="form-label">Length</label>
                 <input type="number" class="form-control" id="length" name="length" step="0.001" required>
@@ -118,33 +142,32 @@ $dataList = refetchData();
 
 
     <script>
-        const addForm = document.getElementById("addForm");
-        const lengthInput = document.getElementById('length');
-        const weightInput = document.getElementById('weight');
-        const heightInput = document.getElementById('height');
+        // const addForm = document.getElementById("addForm");
+        // const lengthInput = document.getElementById('length');
+        // const weightInput = document.getElementById('weight');
+        // const heightInput = document.getElementById('height');
 
-        addForm.addEventListener('submit', function(e) {
-            const body = {
-                length: lengthInput.value,
-                weight: weightInput.value,
-                height: heightInput.value
-            }
-            console.log(body);
-            fetch("http://localhost/phpuvod/data/index.php", {
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }).then(data => {
-                    console.log(data);
-                    <?php $dataList = refetchData(); ?>
-                    for (const key in data) {
-                        console.log(data[key]);
-                    }
-                })
-                .catch(console.log);
-        })
+        // addForm.addEventListener('submit', function(e) {
+        //     const body = {
+        //         length: lengthInput.value,
+        //         weight: weightInput.value,
+        //         height: heightInput.value
+        //     }
+        //     console.log(body);
+        //     fetch("http://localhost/phpuvod/data/index.php", {
+        //             method: 'POST',
+        //             body: JSON.stringify(body),
+        //             headers: {
+        //                 "Content-Type": "application/json"
+        //             }
+        //         }).then(data => {
+        //             console.log(data);
+        //             for (const key in data) {
+        //                 console.log(data[key]);
+        //             }
+        //         })
+        //         .catch(console.log);
+        // })
 
         // let dataList = [];
 
