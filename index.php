@@ -27,33 +27,25 @@ error_reporting(E_ALL);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
     <title>Demo</title>
 </head>
 
 <body>
+    <header class="text-center">
+        <h1>Landing page</h1>
+    </header>
 
-    <a href="login.php">Prihlasit</a>
-    <a href="register.php">Registracia</a>
+    <nav class="text-center">
+        <div>
+            <a href="login.php">Prihlásiť sa</a>
+        </div>
+        <div>
+            <a href="register.php">Zaregistrovať sa</a>
 
-    <!-- <form action="index.php" method="POST">
-        <?php
-            echo  "<div>
-            <label for='email'>Email</label>
-            <input type='email' id='email' name='email'>
-            </div>";
-        ?>
-        <div>
-            <label for="username">Meno</label>
-            <input type="text" id="username" name="username">
         </div>
-        <div>
-            <label for="password">Heslo</label>
-            <input type="password" id="password" name="password">
-        </div>
-        <div>
-            <button type="submit">Prihlasit</button>
-        </div>
-    </form> -->
+    </nav>
 
 </body>
 

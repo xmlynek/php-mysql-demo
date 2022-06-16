@@ -1,0 +1,26 @@
+.lg {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 15px 30px 15px 30px;
+}
+.xlg {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 15px 30px 15px 30px;
+} 
+.btn-center {
+    width: 100%;
+    text-align: center;
+}
+.btn-size {
+    min-width: 35%;
+}
+
+.error {
+    color:red;
+} 
+
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}

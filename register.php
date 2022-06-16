@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once "UserService.php";
 
 ini_set('display_errors', 1);
@@ -13,9 +13,9 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['emai
     $password = htmlspecialchars($_POST['password']);
     $age = htmlspecialchars($_POST['age']);
     $email = htmlspecialchars($_POST['email']);
-    
+
     $existingUser = getUserByEmail($email);
-    if(!$existingUser) {
+    if (!$existingUser) {
         saveUser($username, $email, $password, $age);
     } else {
         $error = true;
@@ -32,35 +32,47 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['emai
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
 </head>
 
 <body>
-    <?php
-        if($error) {
-            echo "<p>Pouzivatel s danym emailom uz existuje</p>";
-        }
-    ?>
-    <form action="register.php" method="POST">
-        <div>
-            <label for="username">Meno</label>
-            <input type="text" id="username" name="username" required>
+
+
+    <section class="mt-4 card lg">
+        <h2>Registrácia</h2>
+        <form action="register.php" method="POST">
+            <?php
+            if ($error) {
+                echo "<div class='mt-1 text-center text-error'>
+                <p class='error'>Používateľ s daným emailom už existuje!</p>
+                </div>";
+            }
+            ?>
+            <div class="mb-3">
+                <label for="username" class="form-label">Meno</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for='email' class="form-label">Email</label>
+                <input type='email' class="form-control" id='email' name='email' required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Heslo</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="age" class="form-label">Vek</label>
+                <input type="number" class="form-control" id="age" name="age" min=0 max=129 step="1" required>
+            </div>
+            <div class="btn-center">
+                <button type="submit" class="btn btn-primary btn-size">Zaregistrovat</button>
+            </div>
+        </form>
+        <div class="mt-3 text-center">
+            <a href="login.php">Už máš vytvorený účet? Prihlás sa</a>
         </div>
-        <div>
-            <label for='email'>Email</label>
-            <input type='email' id='email' name='email' required>
-        </div>
-        <div>
-            <label for="password">Heslo</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <label for="age">Vek</label>
-            <input type="number" id="age" name="age" min=0 max=129 step="1" required>
-        </div>
-        <div>
-            <button type="submit">Zaregistrovat</button>
-        </div>
-    </form>
+    </section>
 </body>
 
 </html>
