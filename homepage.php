@@ -31,22 +31,6 @@ if (isset($_POST['length']) && isset($_POST['weight']) && isset($_POST['height']
     // var_dump($result);
 }
 
-if (isset($_GET['deleteDataId'])) {
-    $url = 'http://localhost/phpuvod/data/index.php?id=' . $_GET['deleteDataId'];
-    $options = array(
-        'http' => array(
-            'header'  => "Content-type: application/json\r\n",
-            'method'  => 'DELETE',
-        )
-    );
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    if ($result === FALSE) { /* Handle error */
-        $apiErr = "Chyba pri mazani dát";
-    }
-    // var_dump($result);
-}
-
 $dataListResponse = file_get_contents('http://localhost/phpuvod/data/index.php');
 $dataList = json_decode($dataListResponse);
 
@@ -124,7 +108,7 @@ $dataList = json_decode($dataListResponse);
                 <td>{$data->weight}</td>
                 <td>{$data->height}</td>
                 <td>
-                    <a href='http://localhost/phpuvod/homepage.php?deleteDataId={$data->id}' class='btn btn-danger'>Delete</a>
+                    <button id='deleteBtn' data-id='{$data->id}' class='btn btn-danger deleteBtn' data-toggle='modal' data-target='#deleteModal' >Delete</button>
                     <a href='http://localhost/phpuvod/updateData.php?id={$data->id}' class='btn btn-warning'>Update</a>
                 </td>
                 </tr>";
@@ -132,6 +116,7 @@ $dataList = json_decode($dataListResponse);
             echo  "</tbody></table>";
         } ?>
 
+        <!-- http://localhost/phpuvod/homepage.php?deleteDataId={$data->id} -->
         <!-- <div id="data-table">
         </div> -->
     </section>
@@ -164,7 +149,45 @@ $dataList = json_decode($dataListResponse);
         </form>
     </section>
 
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Naozaj chcete vymazať tieto data?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a type="button" href="#" id="confirmDeleteBtn" class="btn btn-danger" data-id="">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const deleteBtn = document.getElementsByClassName('deleteBtn');
+
+        for(let index = 0; index < deleteBtn.length; index++) {
+            deleteBtn[index].addEventListener('click', function(e) {
+            confirmDeleteBtn.setAttribute("data-id", e.target.getAttribute("data-id"));
+        });
+        }
+
+        confirmDeleteBtn.addEventListener('click', async function(e){
+            confirmDeleteBtn.href="http://localhost/phpuvod/deleteItem.php?id=" + e.target.getAttribute("data-id");
+        });
+
         // const deleteDataHandler = async (id) => {
         //     await fetch("http://localhost/phpuvod/data/index.php?id=" + id, {
         //         method: 'DELETE',
