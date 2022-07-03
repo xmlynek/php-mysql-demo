@@ -16,7 +16,12 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['emai
 
     $existingUser = getUserByEmail($email);
     if (!$existingUser) {
-        saveUser($username, $email, $password, $age);
+        try {
+            saveUser($username, $email, $password, $age);
+            header("Location: login.php");
+        } catch(Error $err) {
+            echo "something went wrong";
+        }
     } else {
         $error = true;
     }
