@@ -36,14 +36,14 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     <link href="styles.css" rel="stylesheet">
 </head>
 
-<body>
+<body >
     <section class="mt-4 card lg">
-        <h2>Prihlásenie</h2>
+        <h2>Login form</h2>
         <form action="login.php" method="POST">
         <?php
             if ($error) {
                 echo "<div class='mt-1 text-center text-error'>
-                <p class='error'>Nesprávny email alebo heslo!</p>
+                <p class='error'>Incorrect email or password!</p>
                 </div>";
             }
             ?>
@@ -56,11 +56,11 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
             <div class="btn-center">
-                <button type="submit" class="btn btn-primary btn-size">Prihlásiť</button>
+                <button type="submit" class="btn btn-primary btn-size">Login</button>
             </div>
         </form>
         <div class="mt-3 text-center">
-            <a href="register.php">Vytvoriť nový účet (Zaregistrovať sa)</a>
+            <a href="register.php">Create new account (Registration)</a>
         </div>
     </section>
 </body>

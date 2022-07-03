@@ -1,4 +1,5 @@
 <?php
+require_once "../DataService.php";
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
@@ -7,7 +8,6 @@ header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 $requestBodyJSON = file_get_contents('php://input');
 $requestBody = json_decode($requestBodyJSON, TRUE); //convert JSON into array
 
-require_once "../DataService.php";
 
 function checkRequestBody($requestBody)
 {

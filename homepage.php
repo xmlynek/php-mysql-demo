@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once "DataService.php";
 
 $user;
 if (isset($_SESSION['user'])) {
@@ -56,7 +55,7 @@ $dataList = json_decode($dataListResponse);
 <body>
     <header class="text-center">
         <h1>Homepage</h1>
-        <a href='logout.php' class="btn btn-primary btn-size">Odhlásiť</a>
+        <a href='logout.php' class="btn btn-primary btn-size">Logout</a>
     </header>
 
     <section class="card lg mt-5">
@@ -87,7 +86,7 @@ $dataList = json_decode($dataListResponse);
         <h2>Data</h2>
 
         <?php if (!$dataList || sizeof($dataList) === 0) {
-            echo "<p>Zoznam dát je prázdny</p>";
+            echo "<p>List of data is empty</p>";
         } else {
             echo "
         <table class='table table-striped table-hover'>
@@ -115,14 +114,10 @@ $dataList = json_decode($dataListResponse);
             }
             echo  "</tbody></table>";
         } ?>
-
-        <!-- http://localhost/phpuvod/homepage.php?deleteDataId={$data->id} -->
-        <!-- <div id="data-table">
-        </div> -->
     </section>
 
     <section class="mt-4 card lg mb-5">
-        <h2>Pridanie dát</h2>
+        <h2>Data insertion</h2>
         <?php
         if ($apiErr) {
             echo "<div class='mt-1 text-center text-error'>
@@ -144,7 +139,7 @@ $dataList = json_decode($dataListResponse);
                 <input type="number" class="form-control" id="height" name="height" step="0.001" required>
             </div>
             <div class="btn-center">
-                <button type="submit" class="btn btn-primary btn-size">Pridat data</button>
+                <button type="submit" class="btn btn-primary btn-size">Insert data</button>
             </div>
         </form>
     </section>
@@ -160,7 +155,7 @@ $dataList = json_decode($dataListResponse);
                     </button>
                 </div>
                 <div class="modal-body">
-                    Naozaj chcete vymazať tieto data?
+                    Do you really want to delete this data?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

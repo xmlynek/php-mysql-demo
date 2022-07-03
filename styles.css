@@ -2,6 +2,7 @@
     max-width: 740px;
     margin: 0 auto;
     padding: 15px 30px 15px 30px;
+    width: 100%;
 }
 .xlg {
     max-width: 1280px;
@@ -16,9 +17,38 @@
     min-width: 35%;
 }
 
-.error {
+.error { 
     color:red;
 } 
+
+.success {
+    color:green;
+}
+
+ html {
+    min-height: 100vh;
+}
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+body {
+    min-height: 100vh;
+    background: rgb(2,0,36);
+    background: linear-gradient(158deg, rgba(2,0,36,1) 0%, rgba(8,34,138,1) 15%, rgba(118,5,148,1) 33%, rgba(8,152,133,1) 47%, rgba(0,212,255,1) 56%, rgba(118,5,148,1) 75%, rgba(9,9,121,1) 100%, rgba(7,59,154,1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h1 {
+    color:rgb(213, 241, 0);
+    font-size: 3rem;
+}
 
 h2 {
     text-align: center;

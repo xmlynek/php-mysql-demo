@@ -40,17 +40,17 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['emai
 
 
     <section class="mt-4 card lg">
-        <h2>Registrácia</h2>
+        <h2>Registration form</h2>
         <form action="register.php" method="POST">
             <?php
             if ($error) {
                 echo "<div class='mt-1 text-center text-error'>
-                <p class='error'>Používateľ s daným emailom už existuje!</p>
+                <p class='error'>User with given email already exists!</p>
                 </div>";
             }
             ?>
             <div class="mb-3">
-                <label for="username" class="form-label">Meno</label>
+                <label for="username" class="form-label">Name</label>
                 <input type="text" class="form-control" id="username" name="username" required>
             </div>
             <div class="mb-3">
@@ -58,19 +58,19 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['emai
                 <input type='email' class="form-control" id='email' name='email' required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Heslo</label>
+                <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <div class="mb-3">
-                <label for="age" class="form-label">Vek</label>
+                <label for="age" class="form-label">Age</label>
                 <input type="number" class="form-control" id="age" name="age" min=0 max=129 step="1" required>
             </div>
             <div class="btn-center">
-                <button type="submit" class="btn btn-primary btn-size">Zaregistrovat</button>
+                <button type="submit" class="btn btn-primary btn-size">Register</button>
             </div>
         </form>
         <div class="mt-3 text-center">
-            <a href="login.php">Už máš vytvorený účet? Prihlás sa</a>
+            <a href="login.php">Already have an account? Log in!</a>
         </div>
     </section>
 </body>
